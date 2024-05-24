@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ssoready"
-version = "0.0.0"
+version = "0.1.0"
 description = ""
 readme = "README.md"
 authors = []
@@ -28,7 +28,7 @@ packages = [
 ]
 
 [project.urls]
-Repository = 'https://github.com/fern-demo/ssoready-python'
+Repository = 'https://github.com/ssoready/ssoready-python'
 
 [tool.poetry.dependencies]
 python = "^3.8"
