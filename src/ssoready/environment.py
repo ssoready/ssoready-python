@@ -4,4 +4,4 @@ import enum
 
 
 class SSOReadyEnvironment(enum.Enum):
-    DEFAULT = "https://api.dev-ucarion.ssoready-nonprod.com"
+    DEFAULT = "https://api.ssoready.com"
