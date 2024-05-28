@@ -22,7 +22,7 @@ class SamlClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def redeem_access_code(
+    def redeem_saml_access_code(
         self, *, saml_access_code: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
     ) -> RedeemSamlAccessCodeResponse:
         """
@@ -47,8 +47,8 @@ class SamlClient:
         client = SSOReady(
             api_key="YOUR_API_KEY",
         )
-        client.saml.redeem_access_code(
-            saml_access_code="saml_access_code_94d90b43a2027a9084bfc792",
+        client.saml.redeem_saml_access_code(
+            saml_access_code="saml_access_code_...",
         )
         """
         _request: typing.Dict[str, typing.Any] = {}
@@ -90,7 +90,7 @@ class SamlClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_redirect_url(
+    def get_saml_redirect_url(
         self,
         *,
         saml_connection_id: typing.Optional[str] = OMIT,
@@ -137,9 +137,8 @@ class SamlClient:
         client = SSOReady(
             api_key="YOUR_API_KEY",
         )
-        client.saml.get_redirect_url(
-            saml_connection_id="saml_conn_ac3bzzoqhaa88ozk29hhv12l",
-            organization_id="org_7cu5hsy9vrbi5d2k1qvbh19lj",
+        client.saml.get_saml_redirect_url(
+            organization_external_id="my_custom_external_id",
         )
         """
         _request: typing.Dict[str, typing.Any] = {}
@@ -192,7 +191,7 @@ class AsyncSamlClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def redeem_access_code(
+    async def redeem_saml_access_code(
         self, *, saml_access_code: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
     ) -> RedeemSamlAccessCodeResponse:
         """
@@ -217,8 +216,8 @@ class AsyncSamlClient:
         client = AsyncSSOReady(
             api_key="YOUR_API_KEY",
         )
-        await client.saml.redeem_access_code(
-            saml_access_code="saml_access_code_94d90b43a2027a9084bfc792",
+        await client.saml.redeem_saml_access_code(
+            saml_access_code="saml_access_code_...",
         )
         """
         _request: typing.Dict[str, typing.Any] = {}
@@ -260,7 +259,7 @@ class AsyncSamlClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_redirect_url(
+    async def get_saml_redirect_url(
         self,
         *,
         saml_connection_id: typing.Optional[str] = OMIT,
@@ -307,9 +306,8 @@ class AsyncSamlClient:
         client = AsyncSSOReady(
             api_key="YOUR_API_KEY",
         )
-        await client.saml.get_redirect_url(
-            saml_connection_id="saml_conn_ac3bzzoqhaa88ozk29hhv12l",
-            organization_id="org_7cu5hsy9vrbi5d2k1qvbh19lj",
+        await client.saml.get_saml_redirect_url(
+            organization_external_id="my_custom_external_id",
         )
         """
         _request: typing.Dict[str, typing.Any] = {}
