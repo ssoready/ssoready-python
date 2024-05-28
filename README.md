@@ -1,6 +1,6 @@
 # SSOReady-Python
 
-`ssoready` is a Python SDK for the SSOReady API. 
+`ssoready` is a Python SDK for the [SSOReady](https://ssoready.com) API. 
 
 SSOReady is a set of open-source dev tools for implementing Enterprise SSO. You
 can use SSOReady to add SAML support to your product this afternoon, for free,
