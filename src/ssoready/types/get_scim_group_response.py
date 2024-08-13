@@ -5,15 +5,11 @@ import typing
 
 from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .scim_group import ScimGroup
 
 
-class RedeemSamlAccessCodeResponse(pydantic_v1.BaseModel):
-    email: typing.Optional[str] = None
-    state: typing.Optional[str] = None
-    attributes: typing.Optional[typing.Dict[str, str]] = None
-    organization_id: typing.Optional[str] = pydantic_v1.Field(alias="organizationId", default=None)
-    organization_external_id: typing.Optional[str] = pydantic_v1.Field(alias="organizationExternalId", default=None)
-    saml_flow_id: typing.Optional[str] = pydantic_v1.Field(alias="samlFlowId", default=None)
+class GetScimGroupResponse(pydantic_v1.BaseModel):
+    scim_group: typing.Optional[ScimGroup] = pydantic_v1.Field(alias="scimGroup", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
