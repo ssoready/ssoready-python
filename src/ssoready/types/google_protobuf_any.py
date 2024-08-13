@@ -9,8 +9,7 @@ from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 class GoogleProtobufAny(pydantic_v1.BaseModel):
     """
-    Contains an arbitrary serialized message along with a @type that describes the
-    type of the serialized message.
+    Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
     """
 
     type: typing.Optional[str] = pydantic_v1.Field(alias="@type", default=None)

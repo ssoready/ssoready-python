@@ -8,6 +8,7 @@ import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .environment import SSOReadyEnvironment
 from .saml.client import AsyncSamlClient, SamlClient
+from .scim.client import AsyncScimClient, ScimClient
 
 
 class SSOReady:
@@ -69,6 +70,7 @@ class SSOReady:
             timeout=_defaulted_timeout,
         )
         self.saml = SamlClient(client_wrapper=self._client_wrapper)
+        self.scim = ScimClient(client_wrapper=self._client_wrapper)
 
 
 class AsyncSSOReady:
@@ -130,6 +132,7 @@ class AsyncSSOReady:
             timeout=_defaulted_timeout,
         )
         self.saml = AsyncSamlClient(client_wrapper=self._client_wrapper)
+        self.scim = AsyncScimClient(client_wrapper=self._client_wrapper)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: SSOReadyEnvironment) -> str:

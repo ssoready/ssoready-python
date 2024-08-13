@@ -26,8 +26,6 @@ class SamlClient:
         self, *, saml_access_code: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
     ) -> RedeemSamlAccessCodeResponse:
         """
-        Exchange a SAML access code for details about a SAML login.
-
         Parameters
         ----------
         saml_access_code : typing.Optional[str]
@@ -100,27 +98,15 @@ class SamlClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetSamlRedirectUrlResponse:
         """
-        Get a URL to initiate a SAML login.
-
         Parameters
         ----------
         saml_connection_id : typing.Optional[str]
-            The SAML connection to log in with.
 
         organization_id : typing.Optional[str]
-            The organization to log in with, identified by ID.
-            This will use the organization's primary SAML connection.
-
 
         organization_external_id : typing.Optional[str]
-            The organization to log in with, identified by external ID.
-            This will use the organization's primary SAML connection.
-
 
         state : typing.Optional[str]
-            An arbitrary string that will be returned back in the SAML
-            login's corresponding RedeemSAMLAccessCode call.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -195,8 +181,6 @@ class AsyncSamlClient:
         self, *, saml_access_code: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
     ) -> RedeemSamlAccessCodeResponse:
         """
-        Exchange a SAML access code for details about a SAML login.
-
         Parameters
         ----------
         saml_access_code : typing.Optional[str]
@@ -269,27 +253,15 @@ class AsyncSamlClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetSamlRedirectUrlResponse:
         """
-        Get a URL to initiate a SAML login.
-
         Parameters
         ----------
         saml_connection_id : typing.Optional[str]
-            The SAML connection to log in with.
 
         organization_id : typing.Optional[str]
-            The organization to log in with, identified by ID.
-            This will use the organization's primary SAML connection.
-
 
         organization_external_id : typing.Optional[str]
-            The organization to log in with, identified by external ID.
-            This will use the organization's primary SAML connection.
-
 
         state : typing.Optional[str]
-            An arbitrary string that will be returned back in the SAML
-            login's corresponding RedeemSAMLAccessCode call.
-
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

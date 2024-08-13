@@ -9,9 +9,6 @@ from ..core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 
 class GetSamlRedirectUrlResponse(pydantic_v1.BaseModel):
     redirect_url: typing.Optional[str] = pydantic_v1.Field(alias="redirectUrl", default=None)
-    """
-    Redirect your user to this URL to initiate the SAML login.
-    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
