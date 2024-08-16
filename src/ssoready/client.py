@@ -5,8 +5,10 @@ import typing
 
 import httpx
 
+from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .environment import SSOReadyEnvironment
+from .management.client import AsyncManagementClient, ManagementClient
 from .saml.client import AsyncSamlClient, SamlClient
 from .scim.client import AsyncScimClient, ScimClient
 
@@ -59,6 +61,10 @@ class SSOReady:
         httpx_client: typing.Optional[httpx.Client] = None
     ):
         _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
+        if api_key is None:
+            raise ApiError(
+                body="The client must be instantiated be either passing in api_key or setting SSOREADY_API_KEY"
+            )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             api_key=api_key,
@@ -69,6 +75,7 @@ class SSOReady:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.management = ManagementClient(client_wrapper=self._client_wrapper)
         self.saml = SamlClient(client_wrapper=self._client_wrapper)
         self.scim = ScimClient(client_wrapper=self._client_wrapper)
 
@@ -121,6 +128,10 @@ class AsyncSSOReady:
         httpx_client: typing.Optional[httpx.AsyncClient] = None
     ):
         _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
+        if api_key is None:
+            raise ApiError(
+                body="The client must be instantiated be either passing in api_key or setting SSOREADY_API_KEY"
+            )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             api_key=api_key,
@@ -131,6 +142,7 @@ class AsyncSSOReady:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.management = AsyncManagementClient(client_wrapper=self._client_wrapper)
         self.saml = AsyncSamlClient(client_wrapper=self._client_wrapper)
         self.scim = AsyncScimClient(client_wrapper=self._client_wrapper)
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ssoready"
-version = "1.0.1"
+version = "1.1.0"
 description = ""
 readme = "README.md"
 authors = []
