@@ -45,7 +45,7 @@ Calling the `get_saml_redirect_url` endpoint looks like this:
 
 ```python
 # this is how you implement a "Sign in with SSO" button
-redirect_url = client.get_saml_redirect_url(
+redirect_url = client.saml.get_saml_redirect_url(
     # the ID of the organization/workspace/team (whatever you call it)
     # you want to log the user into
     organization_external_id="..."
