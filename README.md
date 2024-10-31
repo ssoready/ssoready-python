@@ -1,14 +1,17 @@
 # SSOReady-Python
 
-`ssoready` is a Python SDK for the [SSOReady](https://ssoready.com) API. 
+[![](https://img.shields.io/pypi/v/ssoready)](https://pypi.org/project/ssoready/)
+
+`ssoready` is a Python SDK for the [SSOReady](https://ssoready.com) API.
 
 SSOReady is a set of open-source dev tools for implementing Enterprise SSO. You
-can use SSOReady to add SAML support to your product this afternoon, for free,
-forever. You can think of us as an open source alternative to products like
-Auth0 or WorkOS.
+can use SSOReady to add SAML and SCIM support to your product this afternoon.
 
-This library includes type definitions for all request and response fields, and
-offers both synchronous and asynchronous clients powered by `httpx`.
+For example applications built using SSOReady C#, check out:
+
+- [SSOReady Example App: Python + Django with SAML](https://github.com/ssoready/ssoready-example-app-python-django-saml)
+- [SSOReady Example App: Python + Flask with SAML](https://github.com/ssoready/ssoready-example-app-python-flask-saml)
+- [SSOReady Example App: Python + FastAPI with SAML](https://github.com/ssoready/ssoready-example-app-python-fastapi-saml)
 
 ## Installation
 
@@ -22,26 +25,29 @@ poetry add ssoready
 
 ## Usage
 
-For full documentation, check out https://ssoready.com/docs.
+This section provides a high-level overview of how SSOReady works, and how it's
+possible to implement SAML and SCIM in just an afternoon. For a more thorough
+introduction, visit the [SAML
+quickstart](https://ssoready.com/docs/saml/saml-quickstart) or the [SCIM
+quickstart](https://ssoready.com/docs/scim/scim-quickstart).
 
-At a super high level, all it takes to add SAML to your product is to:
-
-1. Sign up on [app.ssoready.com](https://app.ssoready.com) for free
-2. From your login page, call `get_saml_redirect_url` when you want a user to sign in with SAML
-3. Your user gets redirected back to a callback page you choose, e.g. `your-app.com/ssoready-callback?saml_access_code=...`. You
-   call `redeem_saml_access_code` with the `saml_access_code` and log them in.
-
-Import and construct a SSOReady client like this:
+The first thing you'll do is create a SSOReady client instance:
 
 ```python
 from ssoready.client import SSOReady
 
 client = SSOReady() # loads your API key from the env var SSOREADY_API_KEY
-# or
-client = SSOReady(api_key="ssoready_sk_...")
 ```
 
-Calling the `get_saml_redirect_url` endpoint looks like this:
+### SAML in two lines of code
+
+SAML (aka "Enterprise SSO") consists of two steps: an _initiation_ step where
+you redirect your users to their corporate identity provider, and a _handling_
+step where you log them in once you know who they are.
+
+To initiate logins, you'll use SSOReady's [Get SAML Redirect
+URL](https://ssoready.com/docs/api-reference/saml/get-saml-redirect-url)
+endpoint:
 
 ```python
 # this is how you implement a "Sign in with SSO" button
@@ -54,7 +60,13 @@ redirect_url = client.get_saml_redirect_url(
 # redirect the user to `redirect_url`...
 ```
 
-And using `redeem_saml_access_code` looks like this:
+You can use whatever your preferred ID is for organizations (you might call them
+"workspaces" or "teams") as your `organization_external_id`. You configure those
+IDs inside SSOReady, and SSOReady handles keeping track of that organization's
+SAML and SCIM settings.
+
+To handle logins, you'll use SSOReady's [Redeem SAML Access
+Code](https://ssoready.com/docs/api-reference/saml/redeem-saml-access-code) endpoint:
 
 ```python
 # this goes in your handler for POST /ssoready-callback
@@ -66,32 +78,28 @@ organization_external_id = redeem_result.organization_external_id
 # log the user in as `email` inside `organizationExternalId`...
 ```
 
-Check out [the quickstart](https://ssoready.com/docs) for the details spelled
-out more concretely. The whole point of SSOReady is to make enterprise SSO super
-obvious and easy.
+You configure the URL for your `/ssoready-callback` endpoint in SSOReady.
 
-## Async Client
+### SCIM in one line of code
 
-You an also use asyncio with this SDK. Do so by using `AsyncSSOReady` instead of
-`SSOReady`.
+SCIM (aka "Enterprise directory sync") is basically a way for you to get a list
+of your customer's employees offline.
+
+To get a customer's employees, you'll use SSOReady's [List SCIM
+Users](https://ssoready.com/docs/api-reference/scim/list-scim-users) endpoint:
 
 ```python
-from ssoready.client import AsyncSSOReady
+list_scim_users_response = client.scim.list_scim_users(
+    organization_external_id="my_custom_external_id"
+)
 
-client = AsyncSSOReady()
-
-async def main() -> None:
-    await client.saml.get_redirect_url(organization_external_id="...")
-    
-asyncio.run(main())
+# create users from each scim user
+for scim_user in list_scim_users_response.scim_users:
+    # every scim_user has an id, email, attributes, and deleted
 ```
-
-All methods available on the sync `SSOReady` client are also available on
-`AsyncSSOReady`.
 
 ## Contributing
 
 Issues and PRs are more than welcome. Be advised that this library is largely
-autogenerated from
-[`ssoready/docs`](https://github.com/ssoready/docs). Most code
-changes ultimately need to be made there, not on this repo.
+autogenerated from [`ssoready/docs`](https://github.com/ssoready/docs). Most
+code changes ultimately need to be made there, not on this repo.
