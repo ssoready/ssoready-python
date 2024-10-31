@@ -7,7 +7,7 @@
 SSOReady is a set of open-source dev tools for implementing Enterprise SSO. You
 can use SSOReady to add SAML and SCIM support to your product this afternoon.
 
-For example applications built using SSOReady C#, check out:
+For example applications built using SSOReady-Python, check out:
 
 - [SSOReady Example App: Python + Django with SAML](https://github.com/ssoready/ssoready-example-app-python-django-saml)
 - [SSOReady Example App: Python + Flask with SAML](https://github.com/ssoready/ssoready-example-app-python-flask-saml)
