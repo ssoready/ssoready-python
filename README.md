@@ -1,4 +1,6 @@
-# SSOReady-Python
+![](https://i.imgur.com/OhtkhbJ.png)
+
+# SSOReady-Python: SAML & SCIM for Python
 
 [![](https://img.shields.io/pypi/v/ssoready)](https://pypi.org/project/ssoready/)
 
