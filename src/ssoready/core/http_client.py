@@ -91,7 +91,7 @@ class HttpClient:
     def request(
         self, *args: typing.Any, max_retries: int = 0, retries: int = 0, **kwargs: typing.Any
     ) -> httpx.Response:
-        """Here retries is just a counter of times the request has been retried which stores in request."""
+        """Here retries is just a counter of times the request has been retried which is stored in request."""
         response = self.httpx_client.request(*args, **kwargs)
         if _should_retry(response=response):
             if max_retries > retries:
