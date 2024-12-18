@@ -4,6 +4,8 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
+from ssoready.core.http_client import AsyncHttpClient, HttpClient
+
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
@@ -20,7 +22,7 @@ OMIT = typing.cast(typing.Any, ...)
 
 class SamlClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._client_wrapper: SyncClientWrapper = client_wrapper
 
     def redeem_saml_access_code(
         self, *, saml_access_code: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
@@ -52,8 +54,8 @@ class SamlClient:
         _request: typing.Dict[str, typing.Any] = {}
         if saml_access_code is not OMIT:
             _request["samlAccessCode"] = saml_access_code
-        _response = self._client_wrapper.httpx_client.request(
-            method="POST",
+        _response = HttpClient.request(
+            self._client_wrapper.httpx_client,
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v1/saml/redeem"),
             params=encode_query(
                 jsonable_encoder(
@@ -78,10 +80,10 @@ class SamlClient:
             if request_options is not None and request_options.get("timeout_in_seconds") is not None
             else self._client_wrapper.get_timeout(),
             retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            max_retries=request_options.get("max_retries", 0) if request_options is not None else 0,  
         )
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(RedeemSamlAccessCodeResponse, _response.json())  # type: ignore
+            return pydantic_v1.parse_obj_as(RedeemSamlAccessCodeResponse, _response.json()) 
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -136,8 +138,8 @@ class SamlClient:
             _request["organizationExternalId"] = organization_external_id
         if state is not OMIT:
             _request["state"] = state
-        _response = self._client_wrapper.httpx_client.request(
-            method="POST",
+        _response = HttpClient.request(
+            self._client_wrapper.httpx_client,
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v1/saml/redirect"),
             params=encode_query(
                 jsonable_encoder(
@@ -162,10 +164,10 @@ class SamlClient:
             if request_options is not None and request_options.get("timeout_in_seconds") is not None
             else self._client_wrapper.get_timeout(),
             retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            max_retries=request_options.get("max_retries", 0) if request_options is not None else 0,
         )
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(GetSamlRedirectUrlResponse, _response.json())  # type: ignore
+            return pydantic_v1.parse_obj_as(GetSamlRedirectUrlResponse, _response.json())
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -175,7 +177,7 @@ class SamlClient:
 
 class AsyncSamlClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
+        self._client_wrapper: AsyncClientWrapper = client_wrapper
 
     async def redeem_saml_access_code(
         self, *, saml_access_code: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
@@ -207,7 +209,8 @@ class AsyncSamlClient:
         _request: typing.Dict[str, typing.Any] = {}
         if saml_access_code is not OMIT:
             _request["samlAccessCode"] = saml_access_code
-        _response = await self._client_wrapper.httpx_client.request(
+        _response = await AsyncHttpClient.request(
+            self._client_wrapper.httpx_client,
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v1/saml/redeem"),
             params=encode_query(
@@ -233,10 +236,10 @@ class AsyncSamlClient:
             if request_options is not None and request_options.get("timeout_in_seconds") is not None
             else self._client_wrapper.get_timeout(),
             retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            max_retries=request_options.get("max_retries", 0) if request_options is not None else 0,
         )
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(RedeemSamlAccessCodeResponse, _response.json())  # type: ignore
+            return pydantic_v1.parse_obj_as(RedeemSamlAccessCodeResponse, _response.json())
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -291,7 +294,8 @@ class AsyncSamlClient:
             _request["organizationExternalId"] = organization_external_id
         if state is not OMIT:
             _request["state"] = state
-        _response = await self._client_wrapper.httpx_client.request(
+        _response = await AsyncHttpClient.request(
+            self._client_wrapper.httpx_client,
             method="POST",
             url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "v1/saml/redirect"),
             params=encode_query(
@@ -317,7 +321,7 @@ class AsyncSamlClient:
             if request_options is not None and request_options.get("timeout_in_seconds") is not None
             else self._client_wrapper.get_timeout(),
             retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            max_retries=request_options.get("max_retries", 0) if request_options is not None else 0, 
         )
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(GetSamlRedirectUrlResponse, _response.json())  # type: ignore
