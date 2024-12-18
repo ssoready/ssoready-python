@@ -8,13 +8,14 @@ Taken from FastAPI, and made a bit simpler
 https://github.com/tiangolo/fastapi/blob/master/fastapi/encoders.py
 """
 
+from _typeshed import DataclassInstance
 import dataclasses
 import datetime as dt
 from collections import defaultdict
 from enum import Enum
 from pathlib import PurePath
 from types import GeneratorType
-from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union, cast
 
 from .datetime_utils import serialize_datetime
 from .pydantic_utilities import pydantic_v1
@@ -53,6 +54,7 @@ def jsonable_encoder(obj: Any, custom_encoder: Optional[Dict[Any, Callable[[Any]
             obj_dict = obj_dict["__root__"]
         return jsonable_encoder(obj_dict, custom_encoder=encoder)
     if dataclasses.is_dataclass(obj):
+        obj = cast(DataclassInstance, obj)
         obj_dict = dataclasses.asdict(obj)
         return jsonable_encoder(obj_dict, custom_encoder=custom_encoder)
     if isinstance(obj, Enum):

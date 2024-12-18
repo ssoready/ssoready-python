@@ -91,6 +91,7 @@ class HttpClient:
     def request(
         self, *args: typing.Any, max_retries: int = 0, retries: int = 0, **kwargs: typing.Any
     ) -> httpx.Response:
+        """Here retries is just a counter of times the request has been retried which is stored in request."""
         response = self.httpx_client.request(*args, **kwargs)
         if _should_retry(response=response):
             if max_retries > retries:
@@ -100,7 +101,7 @@ class HttpClient:
 
     @wraps(httpx.Client.stream)
     @contextmanager
-    def stream(self, *args: typing.Any, max_retries: int = 0, retries: int = 0, **kwargs: typing.Any) -> typing.Any:
+    def stream(self, *args: typing.Any, **kwargs: typing.Any) -> typing.Any:
         with self.httpx_client.stream(*args, **kwargs) as stream:
             yield stream
 
@@ -124,7 +125,7 @@ class AsyncHttpClient:
     @wraps(httpx.AsyncClient.stream)
     @asynccontextmanager
     async def stream(
-        self, *args: typing.Any, max_retries: int = 0, retries: int = 0, **kwargs: typing.Any
+        self, *args: typing.Any, **kwargs: typing.Any
     ) -> typing.Any:
         async with self.httpx_client.stream(*args, **kwargs) as stream:
             yield stream
